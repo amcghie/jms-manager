@@ -5,7 +5,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import uk.gov.dwp.jms.manager.core.client.FailedMessage;
 import uk.gov.dwp.jms.manager.core.client.FailedMessageId;
-import uk.gov.dwp.jms.manager.core.service.FailedMessageService;
+import uk.gov.dwp.jms.manager.core.client.FailedMessageResource;
 
 import java.util.function.Function;
 
@@ -17,10 +17,14 @@ public class FailedMessageReplayerTest {
     private static final String QUEUE_NAME = "uc.queue.name";
 
     private final JmsTemplate jmsTemplate = mock(JmsTemplate.class);
-    private final FailedMessageService failedMessageService = mock(FailedMessageService.class);
+    private final FailedMessageResource failedMessageResource = mock(FailedMessageResource.class);
     private final Function<FailedMessage, MessageCreator> failedMessageCreatorFactory = mock(Function.class);
 
-    private final FailedMessageReplayer underTest = new FailedMessageReplayer(jmsTemplate, failedMessageService, failedMessageCreatorFactory);
+    private final FailedMessageReplayer underTest = new FailedMessageReplayer(
+            jmsTemplate,
+            failedMessageResource,
+            failedMessageCreatorFactory
+    );
 
     @Test
     public void testReplayMessage() throws Exception {
@@ -33,6 +37,6 @@ public class FailedMessageReplayerTest {
         underTest.replay(failedMessage, QUEUE_NAME);
 
         verify(jmsTemplate).send(QUEUE_NAME, failedMessageCreator);
-        verify(failedMessageService).reprocess(FAILED_MESSAGE_ID);
+        verify(failedMessageResource).reprocess(FAILED_MESSAGE_ID);
     }
 }

@@ -66,12 +66,12 @@ public class FailedMessage {
         return properties;
     }
 
-    public SortedSet<String> getLabels() {
-        return labels;
-    }
-
     @Override
     public String toString() {
         return reflectionToString(this);
+    }
+
+    public SortedSet<String> getLabels() {
+        return labels;
     }
 }

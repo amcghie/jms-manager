@@ -27,4 +27,12 @@ public interface FailedMessageResource {
 
     @DELETE
     void delete(List<FailedMessageId> failedMessageIds);
+
+    @POST
+    @Path("/{failedMessageId}")
+    void create(@PathParam("failedMessageId") FailedMessage failedMessage);
+
+    @POST
+    @Path("/{failedMessageId}/reprocess")
+    void reprocess(@PathParam("failedMessageId") FailedMessageId failedMessageId);
 }

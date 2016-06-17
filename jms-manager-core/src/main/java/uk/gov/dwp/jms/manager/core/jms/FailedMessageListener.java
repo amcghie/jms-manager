@@ -2,7 +2,7 @@ package uk.gov.dwp.jms.manager.core.jms;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import uk.gov.dwp.jms.manager.core.service.FailedMessageService;
+import uk.gov.dwp.jms.manager.core.client.FailedMessageResource;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -13,19 +13,19 @@ public class FailedMessageListener implements MessageListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(FailedMessageListener.class);
 
     private final FailedMessageFactory failedMessageFactory;
-    private final FailedMessageService failedMessageService;
+    private final FailedMessageResource failedMessageResource;
 
     public FailedMessageListener(FailedMessageFactory failedMessageFactory,
-                                 FailedMessageService failedMessageService) {
+                                 FailedMessageResource failedMessageResource) {
         this.failedMessageFactory = failedMessageFactory;
-        this.failedMessageService = failedMessageService;
+        this.failedMessageResource = failedMessageResource;
     }
 
     @Override
     public void onMessage(Message message) {
         try {
             LOGGER.debug("Received message: {} with CorrelationId: {}", message.getJMSMessageID(), message.getJMSCorrelationID());
-            failedMessageService.create(failedMessageFactory.createFailedMessage(message));
+            failedMessageResource.create(failedMessageFactory.createFailedMessage(message));
         } catch (JMSException e) {
             LOGGER.error("Could not read jmsMessageId or correlationId", e);
         }

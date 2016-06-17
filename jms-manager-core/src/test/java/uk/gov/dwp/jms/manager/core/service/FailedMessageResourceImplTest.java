@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 import static uk.gov.dwp.jms.manager.core.domain.FailedMessageMatcher.aFailedMessage;
 
-public class FailedMessageServiceImplTest {
+public class FailedMessageResourceImplTest {
 
     private static final FailedMessageId FAILED_MESSAGE_ID = FailedMessageId.newFailedMessageId();
     private static final FailedMessageId ANOTHER_FAILED_MESSAGE_ID = FailedMessageId.newFailedMessageId();
@@ -28,7 +28,7 @@ public class FailedMessageServiceImplTest {
     private final FailedMessageLabelsDao failedMessageLabelsDao = mock(FailedMessageLabelsDao.class);
     private final DestinationStatisticsDao destinationStatisticsDao = mock(DestinationStatisticsDao.class);
 
-    private final FailedMessageServiceImpl underTest = new FailedMessageServiceImpl(failedMessageDao, failedMessageLabelsDao, destinationStatisticsDao);
+    private final FailedMessageResourceImpl underTest = new FailedMessageResourceImpl(failedMessageDao, failedMessageLabelsDao, destinationStatisticsDao);
     private final Destination destination = mock(Destination.class);
     private final FailedMessage failedMessage = FailedMessageBuilder.aFailedMessage().withFailedMessageId(FAILED_MESSAGE_ID).withDestination(destination).build();
 

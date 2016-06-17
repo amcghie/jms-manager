@@ -11,6 +11,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import uk.gov.dwp.jms.manager.core.JmsManagerApplication;
 import uk.gov.dwp.jms.manager.core.client.Destination;
+import uk.gov.dwp.jms.manager.core.client.FailedMessageResource;
 import uk.gov.dwp.jms.manager.core.configuration.DaoProperties;
 
 import java.time.ZonedDateTime;
@@ -25,7 +26,7 @@ import static uk.gov.dwp.jms.manager.core.client.FailedMessageBuilder.aFailedMes
 public class CreateFailedMessagesIntTest {
 
     @Autowired
-    private FailedMessageService failedMessageService;
+    private FailedMessageResource failedMessageResource;
 
     @Autowired
     private MongoClient mongoClient;
@@ -62,7 +63,7 @@ public class CreateFailedMessagesIntTest {
     @Test
     public void testCreate() throws Exception {
         for (int i=0; i<10; i++) {
-            failedMessageService.create(aFailedMessage()
+            failedMessageResource.create(aFailedMessage()
                     .withDestination(destinations.get(i % 4))
                     .withContent("{ \"name\": \"foo\" }")
                     .withSentDateTime(ZonedDateTime.now(UTC).minusSeconds(2))

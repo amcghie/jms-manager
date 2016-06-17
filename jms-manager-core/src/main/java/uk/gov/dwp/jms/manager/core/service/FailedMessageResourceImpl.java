@@ -14,13 +14,13 @@ import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
 
-public class FailedMessageServiceImpl implements FailedMessageService, FailedMessageResource {
+public class FailedMessageResourceImpl implements FailedMessageResource {
 
     private final FailedMessageDao failedMessageDao;
     private final DestinationStatisticsDao destinationStatisticsDao;
     private final FailedMessageLabelsDao failedMessageLabelsDao;
 
-    public FailedMessageServiceImpl(FailedMessageDao failedMessageDao, FailedMessageLabelsDao failedMessageLabelsDao, DestinationStatisticsDao destinationStatisticsDao) {
+    public FailedMessageResourceImpl(FailedMessageDao failedMessageDao, FailedMessageLabelsDao failedMessageLabelsDao, DestinationStatisticsDao destinationStatisticsDao) {
         this.failedMessageDao = failedMessageDao;
         this.destinationStatisticsDao = destinationStatisticsDao;
         this.failedMessageLabelsDao = failedMessageLabelsDao;

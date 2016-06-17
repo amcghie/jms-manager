@@ -49,7 +49,7 @@ public class CxfBusConfiguration {
         JAXRSServerFactoryBean endpoint = new JAXRSServerFactoryBean();
         endpoint.setAddress("/web");
         endpoint.setServiceBeans(new ArrayList<Object>() {{
-            add(new FailedMessageListController(failedMessageResource, new FailedMessagesJsonSerializer()));
+            add(new FailedMessageListController(failedMessageResource, failedMessageSearchResource, new FailedMessagesJsonSerializer()));
             add(new DestinationStatisticsController(destinationStatisticsResource, new DestinationStatisticsJsonSerializer(jacksonConfiguration.objectMapper())));
         }});
         endpoint.setProvider(jacksonConfiguration.jacksonJsonProvider());

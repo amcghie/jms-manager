@@ -1,8 +1,6 @@
 package uk.gov.dwp.jms.manager.web.search;
 
-import uk.gov.dwp.jms.manager.core.client.FailedMessage;
-import uk.gov.dwp.jms.manager.core.client.FailedMessageId;
-import uk.gov.dwp.jms.manager.core.client.FailedMessageResource;
+import uk.gov.dwp.jms.manager.core.client.*;
 import uk.gov.dwp.jms.manager.web.w2ui.BaseW2UIRequest;
 
 import javax.ws.rs.*;
@@ -11,42 +9,48 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 import static javax.ws.rs.core.MediaType.TEXT_HTML;
 import static org.apache.cxf.common.util.StringUtils.split;
 import static uk.gov.dwp.jms.manager.core.client.FailedMessageId.fromString;
+import static uk.gov.dwp.jms.manager.core.client.SearchRequest.aSearchRequest;
 
 @Path("/failed-messages")
 @Produces(TEXT_HTML)
 public class FailedMessageListController {
 
     private final FailedMessageResource failedMessageResource;
+    private final FailedMessageSearchResource failedMessageSearchResource;
     private FailedMessagesJsonSerializer failedMessagesJsonSerializer;
 
-    public FailedMessageListController(FailedMessageResource failedMessageResource, FailedMessagesJsonSerializer failedMessagesJsonSerializer) {
+    public FailedMessageListController(FailedMessageResource failedMessageResource, FailedMessageSearchResource failedMessageSearchResource, FailedMessagesJsonSerializer failedMessagesJsonSerializer) {
         this.failedMessageResource = failedMessageResource;
+        this.failedMessageSearchResource = failedMessageSearchResource;
         this.failedMessagesJsonSerializer = failedMessagesJsonSerializer;
     }
 
     @GET
     public FailedMessageListPage getFailedMessages() {
-        List<FailedMessage> failedMessages = failedMessageResource.getFailedMessages();
+        return getFailedMessageListPage(aSearchRequest());
+    }
+
+    private FailedMessageListPage getFailedMessageListPage(SearchRequest.SearchRequestBuilder searchRequestBuilder) {
+        List<FailedMessage> failedMessages = failedMessageSearchResource.findMessages(searchRequestBuilder.build());
         return new FailedMessageListPage(failedMessages, failedMessagesJsonSerializer);
     }
 
     @GET
     @Path("/{brokerName}")
     public FailedMessageListPage getFailedMessages(@PathParam("brokerName") String brokerName) {
-        // TODO: Introduce FailedMessageSearchResource in jms-manager-core
-        return getFailedMessages();
+        return getFailedMessageListPage(aSearchRequest().withBrokerName(of(brokerName)));
     }
 
     @GET
     @Path("/{brokerName}/{destination}")
     public FailedMessageListPage getFailedMessages(@PathParam("brokerName") String brokerName, @PathParam("destination") String destinationName) {
-        // TODO: Introduce FailedMessageSearchResource in jms-manager-core
-        return getFailedMessages();
+        return getFailedMessageListPage(aSearchRequest().withBrokerName(of(brokerName)).withQueueName(of(destinationName)));
     }
 
     @POST
