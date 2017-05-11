@@ -70,7 +70,6 @@ public class FailedMessageListController {
     @Consumes("application/json")
     public String updateLabelsOnFailedMessages(LabelRequest request) {
         request.getChanges()
-                .stream()
                 .forEach(change -> failedMessageResource.setLabels(fromString(change.getRecid()), extractLabels(change)));
         return "{ 'status': 'success' }";
     }

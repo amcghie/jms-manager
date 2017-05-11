@@ -7,8 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.dwp.jms.manager.core.JmsManagerApplication;
 import uk.gov.dwp.jms.manager.core.client.Destination;
 import uk.gov.dwp.jms.manager.core.client.FailedMessageResource;
@@ -21,8 +21,8 @@ import java.util.List;
 import static java.time.ZoneOffset.UTC;
 import static uk.gov.dwp.jms.manager.core.client.FailedMessageBuilder.aFailedMessage;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(JmsManagerApplication.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = JmsManagerApplication.class)
 public class CreateFailedMessagesIntTest {
 
     @Autowired

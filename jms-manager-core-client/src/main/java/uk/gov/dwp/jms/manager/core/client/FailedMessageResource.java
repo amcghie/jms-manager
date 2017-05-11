@@ -9,6 +9,11 @@ import java.util.Set;
 @Path("/failed-message")
 public interface FailedMessageResource {
 
+    /**
+     * @deprecated Use the {@link FailedMessageSearchResource}
+     * @param failedMessgeId
+     * @return
+     */
     @Deprecated
     @GET
     @Path("/{failedMessageId}")
@@ -22,6 +27,10 @@ public interface FailedMessageResource {
     @Path("/{failedMessageId}/add")
     void setLabels(@PathParam("failedMessageId") FailedMessageId failedMessageId, Set<String> labels);
 
+    /**
+     * @deprecated Use the {@link FailedMessageSearchResource}
+     * @return
+     */
     @Deprecated
     @GET
     @Path("/all")
@@ -31,8 +40,7 @@ public interface FailedMessageResource {
     void delete(List<FailedMessageId> failedMessageIds);
 
     @POST
-    @Path("/{failedMessageId}")
-    void create(@PathParam("failedMessageId") FailedMessage failedMessage);
+    void create(FailedMessage failedMessage);
 
     @POST
     @Path("/{failedMessageId}/reprocess")
